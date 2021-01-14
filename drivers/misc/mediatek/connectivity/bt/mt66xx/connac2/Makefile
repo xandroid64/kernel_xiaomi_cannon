@@ -4,6 +4,7 @@
 ###############################################################################
 
 USE_DEVICE_NODE := y
+ccflags-y += -Wno-error
 #CUSTOMER_FW_UPDATE := y
 
 ccflags-y += -DCHIP_IF_BTIF
