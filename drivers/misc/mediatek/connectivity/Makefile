@@ -47,6 +47,7 @@ endif
     # Do build-in for xxx.c checking
     subdir-ccflags-y += -D MTK_WCN_REMOVE_KERNEL_MODULE
     subdir-ccflags-y += -D MTK_WCN_BUILT_IN_DRIVER
+    obj-y += bt/mt66xx/connac2/
     obj-y += common/
     obj-y += wlan/adaptor/
     obj-y += wlan/core/gen4m/
