@@ -433,3 +433,6 @@ source "drivers/misc/mediatek/udi/Kconfig"
 
 endmenu    # Misc
 
+config MTK_UDC
+	bool "MediaTek UDC Driver"
+	default y

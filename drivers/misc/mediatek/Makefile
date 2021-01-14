@@ -177,3 +177,4 @@ obj-$(CONFIG_MTK_UNIFIED_DEBUG_INTERFACE) += udi/
 obj-y += rps/
 obj-$(CONFIG_MTK_ULTRASND_PROXIMITY) += elliptic/
 obj-y += subpmic/
+obj-$(CONFIG_MTK_UDC) += udc/
