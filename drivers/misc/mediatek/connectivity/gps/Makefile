@@ -10,10 +10,7 @@
 # published by the Free Software Foundation.
 
 ###############################################################################
-
-ifeq ($(TARGET_BUILD_VARIANT),$(filter $(TARGET_BUILD_VARIANT),userdebug user))
-    ldflags-y += -s
-endif
+ldflags-y += -s
 
 # Force build fail on modpost warning
 KBUILD_MODPOST_FAIL_ON_WARNINGS := y
@@ -66,12 +63,12 @@ endif
 
 ifeq ($(SELECT_GPS_DL_DRV),y) # New GPS driver with L1+L5 support
 ifeq ($(GPS_DL_HAS_CONNINFRA_DRV),y)
-CONNINFRA_SRC_FOLDER := $(TOP)/vendor/mediatek/kernel_modules/connectivity/conninfra
+CONNINFRA_SRC_FOLDER := $(srctree)/drivers/misc/mediatek/connectivity/conninfra
 ccflags-y += -I$(CONNINFRA_SRC_FOLDER)/include
 ccflags-y += -DGPS_DL_HAS_CONNINFRA_DRV=1
 endif
 
-GPS_SRC_FOLDER := $(TOP)/vendor/mediatek/kernel_modules/connectivity/gps
+GPS_SRC_FOLDER := $(srctree)/drivers/misc/mediatek/connectivity/gps
 ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/inc
 ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/linux/inc
 ccflags-y += -I$(GPS_SRC_FOLDER)/data_link/link/inc
@@ -127,7 +124,7 @@ ccflags-y += -DGPS_DL_HAS_MOCK=1
 endif
 
 else #Legacy drivers
-WMT_SRC_FOLDER := $(TOP)/vendor/mediatek/kernel_modules/connectivity/common
+WMT_SRC_FOLDER := $(srctree)/drivers/misc/mediatek/connectivity/common
 
 ifeq ($(CONFIG_MTK_COMBO_CHIP),)
     $(error CONFIG_MTK_COMBO_CHIP not defined)
