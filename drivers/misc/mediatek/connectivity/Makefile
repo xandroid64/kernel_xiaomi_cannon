@@ -50,6 +50,7 @@ endif
     obj-y += bt/mt66xx/connac2/
     obj-y += common/
     obj-y += conninfra/
+    obj-y += fmradio/
     obj-y += wlan/adaptor/
     obj-y += wlan/core/gen4m/
     obj-y += gps/
