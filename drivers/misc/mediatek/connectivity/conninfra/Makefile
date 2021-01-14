@@ -127,11 +127,11 @@ $(MODULE_NAME)-objs += platform/consys_reg_mng.o
 $(MODULE_NAME)-objs += debug_utility/conninfra_dbg.o
 
 # By Plaftfrom
-$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
-$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_pmic.o
-$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_emi.o
-$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_consys_reg.o
-$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_pos.o
+#$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
+#$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_pmic.o
+#$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_emi.o
+#$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_consys_reg.o
+#$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_pos.o
 #$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
 #$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_pmic.o
 #$(MODULE_NAME)-objs += platform/$(MTK_PLATFORM)/$(MTK_PLATFORM)_clock.o
@@ -144,10 +144,10 @@ $(MODULE_NAME)-objs += debug_utility/step/conninfra_step_parse_act.o
 # Debug utility
 $(MODULE_NAME)-objs += debug_utility/connsyslog/ring_emi.o
 $(MODULE_NAME)-objs += debug_utility/connsyslog/connsyslog.o
-$(MODULE_NAME)-objs += debug_utility/connsyslog/platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
+#$(MODULE_NAME)-objs += debug_utility/connsyslog/platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
 $(MODULE_NAME)-objs += debug_utility/coredump/connsys_coredump.o
 $(MODULE_NAME)-objs += debug_utility/coredump/conndump_netlink.o
-$(MODULE_NAME)-objs += debug_utility/coredump/platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
+#$(MODULE_NAME)-objs += debug_utility/coredump/platform/$(MTK_PLATFORM)/$(MTK_PLATFORM).o
 
 ###############################################################################
 # test
