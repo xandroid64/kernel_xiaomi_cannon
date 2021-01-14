@@ -11,7 +11,7 @@
 
 ###############################################################################
 ldflags-y += -s
-
+ccflags-y += -Wno-error
 # Force build fail on modpost warning
 KBUILD_MODPOST_FAIL_ON_WARNINGS := y
 ###############################################################################
