@@ -364,14 +364,15 @@ exit:
 	return ret;
 }
 
-int osal_strtol(const char *str, unsigned int adecimal, long *res)
+#ifdef CONFIG_MTK_BT_DEBUG
+extern int osal_strtol(const char *str, unsigned int adecimal, long *res)
 {
 	if (sizeof(long) == 4)
 		return kstrtou32(str, adecimal, (unsigned int *) res);
 	else
 		return kstrtol(str, adecimal, res);
 }
-
+#endif
 void bt_dbg_user_trx_cb(char *buf, int len)
 {
 	unsigned char *ptr = buf;
@@ -414,7 +415,9 @@ void bt_dbg_user_trx_proc(char *cmd_raw)
 		ptr = strsep(&pRaw, " ");
 
 		if (ptr != NULL) {
+#ifdef CONFIG_MTK_BT_DEBUG
 			osal_strtol(ptr, 16, &tmp);
+#endif
 			hci_cmd[len++] = (unsigned char)tmp;
 		}
 	}
@@ -486,7 +489,9 @@ ssize_t bt_dbg_write(struct file *filp, const char __user *buffer, size_t count,
 	pBuf = buf;
 	pToken = strsep(&pBuf, pDelimiter);
 	if (pToken != NULL) {
+#ifdef CONFIG_MTK_BT_DEBUG
 		osal_strtol(pToken, 16, &res);
+#endif
 		x = (int)res;
 	} else {
 		x = 0;
@@ -494,7 +499,9 @@ ssize_t bt_dbg_write(struct file *filp, const char __user *buffer, size_t count,
 
 	pToken = strsep(&pBuf, "\t\n ");
 	if (pToken != NULL) {
+#ifdef CONFIG_MTK_BT_DEBUG
 		osal_strtol(pToken, 16, &res);
+#endif
 		y = (int)res;
 		BTMTK_INFO("%s: y = 0x%08x\n\r", __func__, y);
 	} else {
@@ -506,7 +513,9 @@ ssize_t bt_dbg_write(struct file *filp, const char __user *buffer, size_t count,
 
 	pToken = strsep(&pBuf, "\t\n ");
 	if (pToken != NULL) {
+#ifdef CONFIG_MTK_BT_DEBUG
 		osal_strtol(pToken, 16, &res);
+#endif
 		z = (int)res;
 	} else {
 		z = 10;
