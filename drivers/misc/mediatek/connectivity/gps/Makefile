@@ -48,7 +48,7 @@ ccflags-y += -I$(srctree)/drivers/devfreq
 ###############################################################################
 
 MODULE_NAME := gps_drv
-obj-y += $(MODULE_NAME).o
+obj-m += $(MODULE_NAME).o
 
 SELECT_GPS_DL_DRV := n
 GPS_DL_HAS_MOCK := n
