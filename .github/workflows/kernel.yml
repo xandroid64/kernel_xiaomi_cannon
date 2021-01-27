@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: toolchain
-      run: git clone --depth=1 https://github.com/mvaisakh/gcc-arm64 ~/tc/
+      run: git clone --depth=1 https://github.com/mvaisakh/gcc-arm64 ~/tc/gcc64 && git clone https://github.com/mvaisakh/gcc-arm ~/tc/gcc32
     - name: Set build date
       id: get-date
       run: |
@@ -23,7 +23,7 @@ jobs:
     - name: configure
       run: make O=out ARCH=arm64 cannong_user_defconfig
     - name: make
-      run: make O=out ARCH=arm64 CROSS_COMPILE=~/tc/bin/aarch64-elf- -j$(nproc --all)
+      run: make O=out ARCH=arm64 CROSS_COMPILE=~/tc/gcc64/bin/aarch64-elf- CROSS_COMPILE_ARM32=~/tc/gcc32/bin/arm-eabi- -j$(nproc --all)
     - name: Kernel Image
       run: cp out/arch/arm64/boot/Image.gz-dtb xandroid-kernel-${{ steps.get-date.outputs.date }}.gz
     - name: Create Release
