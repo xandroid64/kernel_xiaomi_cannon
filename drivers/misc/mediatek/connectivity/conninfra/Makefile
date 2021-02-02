@@ -30,19 +30,19 @@ ccflags-y += -D MTK_WCN_WMT_STP_EXP_SYMBOL_ABSTRACT
 ccflags-y += -D MTK_CONNINFRA_CLOCK_BUFFER_API_AVAILABLE=1
 
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include/mach
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/mt6885/include
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/mt6885/include/mach
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/$(MTK_PLATFORM)
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/mt6885
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1/$(MTK_PLATFORM)
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/clkbuf_v1/mt6885
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci/$(MTK_PLATFORM)
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/eccci/mt6885
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/eemcs
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/include/mach
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/mach/mt6885/include/mach
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/submodule
-ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/$(MTK_PLATFORM)
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/emi/mt6885
 ccflags-y += -I$(srctree)/drivers/mmc/core
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/connectivity/common
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/pmic/include/
@@ -75,7 +75,7 @@ ccflags-y += -I$(src)/debug_utility/coredump/platform/include
 ccflags-y += -I$(src)/debug_utility/step/include
 
 # By Plaftfrom
-ccflags-y += -I$(src)/platform/$(MTK_PLATFORM)/include
+ccflags-y += -I$(src)/platform/mt6885/include
 
 
 ifneq ($(TARGET_BUILD_VARIANT), user)
@@ -102,7 +102,7 @@ endif
 #endif
 
 #ifneq ($(filter "CONSYS_%",$(CONFIG_MTK_COMBO_CHIP)),)
-#$(MODULE_NAME)-objs += common_main/platform/$(MTK_PLATFORM).o
+#$(MODULE_NAME)-objs += common_main/platform/mt6885.o
 #endif
 
 $(MODULE_NAME)-objs += base/ring.o
