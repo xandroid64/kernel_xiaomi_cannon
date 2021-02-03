@@ -189,9 +189,9 @@ int consys_clock_buffer_ctrl(unsigned int enable)
 	 * Keep this function call to update status.
 	 */
 	if (enable)
-		KERNEL_clk_buf_ctrl(CLK_BUF_CONN, true);	/*open XO_WCN*/
+		clk_buf_ctrl(CLK_BUF_CONN, true);	/*open XO_WCN*/
 	else
-		KERNEL_clk_buf_ctrl(CLK_BUF_CONN, false);	/*close XO_WCN*/
+		clk_buf_ctrl(CLK_BUF_CONN, false);	/*close XO_WCN*/
 	return 0;
 }
 
