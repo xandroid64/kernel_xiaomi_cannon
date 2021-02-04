@@ -230,7 +230,9 @@ static long conninfra_dev_unlocked_ioctl(struct file *filp, unsigned int cmd, un
 		retval = consys_hw_chipid_get();
 		break;
 	case CONNINFRA_IOCTL_SET_COREDUMP_MODE:
+#ifdef CONFIG_CONNINFRA_DEBUG
 		connsys_coredump_set_dump_mode(arg);
+#endif
 		break;
 	}
 
@@ -487,11 +489,10 @@ static int conninfra_dev_init(void)
 		g_conninfra_init_status = CONNINFRA_INIT_NOT_START;
 		return -3;
 	}
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 	conninfra_dev_dbg_init();
-
 	CONNINFRA_STEP_INIT_FUNC();
-
+#endif
 	wmt_export_platform_bridge_register(&g_plat_bridge);
 
 	conninfra_register_devapc_callback();
@@ -529,15 +530,15 @@ static void conninfra_dev_deinit(void)
 	g_conninfra_init_status = CONNINFRA_INIT_NOT_START;
 	fb_unregister_client(&conninfra_fb_notifier);
 
-
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 	iret = conninfra_dev_dbg_deinit();
+#endif
 #ifdef CFG_CONNINFRA_UT_SUPPORT
 	iret = conninfra_test_remove();
 #endif
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 	CONNINFRA_STEP_DEINIT_FUNC();
-
+#endif
 	iret = conninfra_core_deinit();
 
 	iret = consys_hw_deinit();

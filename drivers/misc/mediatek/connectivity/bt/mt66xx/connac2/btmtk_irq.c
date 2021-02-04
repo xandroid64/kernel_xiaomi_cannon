@@ -165,7 +165,9 @@ void bt_bgf2ap_irq_handler(void)
 	} else if (bgf_status & BGF_FW_LOG_NOTIFY) {
 		/* FW notify host to get FW log */
 		SET_BIT(BGF_SW_IRQ_RESET_ADDR, BGF_FW_LOG_NOTIFY);
+#ifdef CONFIG_CONNINFRA_DEBUG
 		connsys_log_irq_handler(CONN_DEBUG_TYPE_BT);
+#endif
 		bt_enable_irq(BGF2AP_SW_IRQ);
 	} else if (bgf_status &  BGF_WHOLE_CHIP_RESET) {
 		conninfra_trigger_whole_chip_rst(CONNDRV_TYPE_BT, "FW trigger");

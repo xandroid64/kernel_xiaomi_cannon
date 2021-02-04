@@ -914,7 +914,7 @@ static int32_t __download_patch_to_emi(
 		uint8_t *patch_name,
 		uint32_t emi_start,
 		uint32_t emi_size,
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 		phys_addr_t fwdate_offset,
 #endif
 		uint8_t *datetime)
@@ -998,7 +998,7 @@ static int32_t __download_patch_to_emi(
 		ret = -EINVAL;
 	}
 
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	remap_addr = ioremap_nocache(emi_ap_phy_base + fwdate_offset, sizeof(p_patch_hdr->date_time));
 	if (remap_addr) {
 		memcpy_toio(remap_addr, p_patch_hdr->date_time, sizeof(p_patch_hdr->date_time));
@@ -1027,7 +1027,7 @@ done:
 static int32_t bgfsys_mcu_rom_patch_dl(enum FWP_LOAD_FROM fwp_from, struct fwp_info *info)
 {
 	int32_t ret = 0;
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	phys_addr_t fwdate_offset = connsys_coredump_get_start_offset(CONN_DEBUG_TYPE_BT) +
 				    EMI_COREDUMP_MCU_DATE_OFFSET;
 #endif
@@ -1039,7 +1039,7 @@ static int32_t bgfsys_mcu_rom_patch_dl(enum FWP_LOAD_FROM fwp_from, struct fwp_i
 	return __download_patch_to_emi(g_fwp_names[0][fwp_from],
 				       EMI_BGFSYS_MCU_START,
 				       EMI_BGFSYS_MCU_SIZE,
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 				       fwdate_offset,
 #endif
 				       info->datetime[0]);
@@ -1058,7 +1058,7 @@ static int32_t bgfsys_mcu_rom_patch_dl(enum FWP_LOAD_FROM fwp_from, struct fwp_i
  */
 static int32_t bgfsys_bt_ram_code_dl(enum FWP_LOAD_FROM fwp_from, struct fwp_info *info)
 {
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	phys_addr_t fwdate_offset = connsys_coredump_get_start_offset(CONN_DEBUG_TYPE_BT) +
 				    EMI_COREDUMP_BT_DATE_OFFSET;
 #endif
@@ -1066,7 +1066,7 @@ static int32_t bgfsys_bt_ram_code_dl(enum FWP_LOAD_FROM fwp_from, struct fwp_inf
 	return __download_patch_to_emi(g_fwp_names[1][fwp_from],
 				       EMI_BT_START,
 				       EMI_BT_SIZE,
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 				       fwdate_offset,
 #endif
 				       info->datetime[1]);
@@ -1608,7 +1608,7 @@ int32_t btmtk_set_power_on(struct hci_dev *hdev, u_int8_t for_precal)
 	bgfsys_ccif_on();
 
 	/* 3. clear coredump */
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	if (!bdev->coredump_handle)
 		BTMTK_ERR("Coredump handle is NULL\n");
 	else
@@ -1679,7 +1679,7 @@ int32_t btmtk_set_power_on(struct hci_dev *hdev, u_int8_t for_precal)
 					bdev->cal_data.p_cache_buf,
 					bdev->cal_data.cache_len);
 
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	if (!bdev->coredump_handle)
 		BTMTK_ERR("Coredump handle is NULL\n");
 	else

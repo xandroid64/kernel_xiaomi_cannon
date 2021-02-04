@@ -116,8 +116,9 @@ static int32_t btmtk_send_utc_sync_cmd(void)
 	BTMTK_INFO("[InternalCmd] %s", __func__);
 	down(&g_bdev->internal_cmd_sem);
 	g_bdev->event_intercept = TRUE;
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 	connsys_log_get_utc_time(&sec, &usec);
+#endif
 	memcpy(cmd + 9, &sec, sizeof(uint32_t));
 	memcpy(cmd + 9 + sizeof(uint32_t), &usec, sizeof(uint32_t));
 
@@ -297,9 +298,11 @@ static unsigned int fw_log_bt_poll(struct file *file, poll_table *wait)
 	uint32_t mask = 0;
 
 	poll_wait(file, &BT_log_wq, wait);
+#ifdef CONFIG_CONNINFRA_DEBUG
 	if (connsys_log_get_buf_size(CONN_DEBUG_TYPE_BT) > 0) {
 		mask = (POLLIN | POLLRDNORM);
 	}
+#endif
 	return mask;
 }
 
@@ -365,9 +368,10 @@ OUT:
 static ssize_t fw_log_bt_read(struct file *filp, char __user *buf, size_t len, loff_t *f_pos)
 {
 	size_t retval = 0;
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 	retval = connsys_log_read_to_user(CONN_DEBUG_TYPE_BT, buf, len);
 	BTMTK_DBG("BT F/W log from Connsys, len %zd\n", retval);
+#endif
 	return retval;
 }
 
@@ -400,9 +404,10 @@ int fw_log_bt_init(struct hci_dev *hdev)
 
 	BTMTK_INFO("%s", __func__);
 	g_bdev = hci_get_drvdata(hdev);
+#ifdef CONFIG_CONNINFRA_DEBUG
 	connsys_log_init(CONN_DEBUG_TYPE_BT);
 	connsys_log_register_event_cb(CONN_DEBUG_TYPE_BT, fw_log_bt_event_cb);
-
+#endif
 	init_waitqueue_head(&BT_log_wq);
 	sema_init(&ioctl_mtx, 1);
 
@@ -450,7 +455,9 @@ cdv_error:
 	unregister_chrdev_region(devno, 1);
 
 alloc_error:
+#ifdef CONFIG_CONNINFRA_DEBUG
 	connsys_log_deinit(CONN_DEBUG_TYPE_BT);
+#endif
 	return -1;
 }
 
@@ -471,8 +478,9 @@ void fw_log_bt_exit(void)
 	unregister_chrdev_region(devno, 1);
 
 	g_bdev->state_change_cb[0] = NULL;
+#ifdef CONFIG_CONNINFRA_DEBUG
 	connsys_log_deinit(CONN_DEBUG_TYPE_BT);
-
+#endif
 	BTMTK_INFO("%s driver removed\n", BT_LOG_NODE_NAME);
 }
 

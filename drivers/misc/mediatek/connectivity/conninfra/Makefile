@@ -77,25 +77,8 @@ ccflags-y += -I$(src)/debug_utility/step/include
 # By Plaftfrom
 ccflags-y += -I$(src)/platform/mt6885/include
 
-
-ifneq ($(TARGET_BUILD_VARIANT), user)
-    ccflags-y += -D CONNINFRA_DBG_SUPPORT=1
-else
-    ccflags-y += -D CONNINFRA_DBG_SUPPORT=0
-endif
-
-# STEP: (Support Connac)
-# MTK eng/userdebug/user load: Support
-# Customer eng/userdebug load: Support
-# Customer user load: Not support
-
-ifeq ($(wildcard vendor/mediatek/proprietary/external/aee_config_internal/init.aee.mtk.system.rc),)
-	ccflags-y += -D CFG_CONNINFRA_STEP
-else
-	ifneq ($(TARGET_BUILD_VARIANT),user)
-		ccflags-y += -D CFG_CONNINFRA_STEP
-	endif
-endif
+# Disable debugging
+ccflags-y += -D CONNINFRA_DBG_SUPPORT=0
 
 #ifeq ($(findstring evb, $(MTK_PROJECT)), evb)
 #ccflags-y += -D CFG_WMT_EVB
@@ -119,8 +102,6 @@ $(MODULE_NAME)-objs += platform/pmic_mng.o
 $(MODULE_NAME)-objs += platform/emi_mng.o
 $(MODULE_NAME)-objs += platform/consys_reg_mng.o
 
-$(MODULE_NAME)-objs += debug_utility/conninfra_dbg.o
-
 # By Plaftfrom
 $(MODULE_NAME)-objs += platform/mt6885/mt6885.o
 $(MODULE_NAME)-objs += platform/mt6885/mt6885_pmic.o
@@ -128,37 +109,3 @@ $(MODULE_NAME)-objs += platform/mt6885/mt6885_emi.o
 $(MODULE_NAME)-objs += platform/mt6885/mt6885_consys_reg.o
 $(MODULE_NAME)-objs += platform/mt6885/mt6885_pos.o
 $(MODULE_NAME)-objs += platform/mt6885/mt6885.o
-
-# STEP
-$(MODULE_NAME)-objs += debug_utility/step/conninfra_step.o
-$(MODULE_NAME)-objs += debug_utility/step/conninfra_step_parse.o
-$(MODULE_NAME)-objs += debug_utility/step/conninfra_step_parse_act.o
-
-# Debug utility
-$(MODULE_NAME)-objs += debug_utility/connsyslog/ring_emi.o
-$(MODULE_NAME)-objs += debug_utility/connsyslog/connsyslog.o
-$(MODULE_NAME)-objs += debug_utility/connsyslog/platform/mt6885/mt6885.o
-$(MODULE_NAME)-objs += debug_utility/coredump/connsys_coredump.o
-$(MODULE_NAME)-objs += debug_utility/coredump/conndump_netlink.o
-$(MODULE_NAME)-objs += debug_utility/coredump/platform/mt6885/mt6885.o
-
-###############################################################################
-# test
-###############################################################################
-ifneq ($(TARGET_BUILD_VARIANT), user)
-ccflags-y += -D CFG_CONNINFRA_UT_SUPPORT
-
-ccflags-y += -I$(src)/test/include
-$(MODULE_NAME)-objs += test/conninfra_core_test.o
-$(MODULE_NAME)-objs += test/conf_test.o
-$(MODULE_NAME)-objs += test/cal_test.o
-$(MODULE_NAME)-objs += test/msg_evt_test.o
-$(MODULE_NAME)-objs += test/chip_rst_test.o
-$(MODULE_NAME)-objs += test/conninfra_test.o
-$(MODULE_NAME)-objs += test/mailbox_test.o
-$(MODULE_NAME)-objs += test/connsyslog_test.o
-$(MODULE_NAME)-objs += test/conninfra_step_test.o
-$(MODULE_NAME)-objs += test/conninfra_step_test_util.o
-$(MODULE_NAME)-objs += test/dump_test.o
-endif
-

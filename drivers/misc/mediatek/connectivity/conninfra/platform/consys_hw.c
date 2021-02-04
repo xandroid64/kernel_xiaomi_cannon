@@ -185,9 +185,9 @@ int consys_hw_pwr_off(unsigned int curr_status, unsigned int off_radio)
 	int ret = 0;
 
 	if (next_status == 0) {
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 		CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_BEFORE_POWER_OFF);
-
+#endif
 		pr_info("Last pwoer off: %d\n", off_radio);
 		pr_info("Power off CONNSYS PART 1\n");
 		if (consys_hw_ops->consys_plt_conninfra_on_power_ctrl)
@@ -219,8 +219,9 @@ int consys_hw_pwr_on(unsigned int curr_status, unsigned int on_radio)
 
 	/* first power on */
 	if (curr_status == 0) {
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 		CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_POWER_ON_START);
+#endif
 		/* POS PART 1:
 		 * Set PMIC to turn on the power that AFE WBG circuit in D-die,
 		 * OSC or crystal component, and A-die need.
@@ -243,8 +244,9 @@ int consys_hw_pwr_on(unsigned int curr_status, unsigned int on_radio)
 
 		/* Wait 5ms for CONNSYS XO clock ready */
 		mdelay(6);
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 		CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_POWER_ON_BEFORE_GET_CONNSYS_ID);
+#endif
 		if (consys_hw_ops->consys_plt_polling_consys_chipid)
 			consys_hw_ops->consys_plt_polling_consys_chipid();
 
@@ -273,8 +275,9 @@ int consys_hw_pwr_on(unsigned int curr_status, unsigned int on_radio)
 			consys_hw_ops->consys_plt_subsys_status_update(true, on_radio);
 		if (consys_hw_ops->consys_plt_low_power_setting)
 			consys_hw_ops->consys_plt_low_power_setting(curr_status, next_status);
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 		CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_POWER_ON_END);
+#endif
 	} else {
 		ret = _consys_hw_conninfra_wakeup();
 		/* Record SW status on shared sysram */
@@ -321,7 +324,9 @@ int consys_hw_therm_query(int *temp_ptr)
 		ret = _consys_hw_conninfra_wakeup();
 		if (ret)
 			return CONNINFRA_ERR_WAKEUP_FAIL;
+#ifdef CONFIG_CONNINFRA_DEBUG
 		CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_BEFORE_READ_THERMAL);
+#endif
 		*temp_ptr = consys_hw_ops->consys_plt_thermal_query();
 		_consys_hw_conninfra_sleep();
 	} else
@@ -464,8 +469,9 @@ int consys_hw_bus_clock_ctrl(enum consys_drv_type drv_type, unsigned int bus_clo
 int mtk_conninfra_probe(struct platform_device *pdev)
 {
 	int ret = -1;
+#ifdef CONFIG_CONNINFRA_DEBUG
 	struct consys_emi_addr_info* emi_info = NULL;
-
+#endif
 	/* Read device node */
 	if (consys_reg_mng_init(pdev) != 0) {
 		pr_err("consys_plt_read_reg_from_dts fail");
@@ -491,7 +497,7 @@ int mtk_conninfra_probe(struct platform_device *pdev)
 		pr_err("pmic_mng init fail, %d\n", ret);
 		return -4;
 	}
-
+#ifdef CONFIG_CONNINFRA_DEBUG
 	/* Setup connsys log emi base */
 	emi_info = emi_mng_get_phy_addr();
 	if (emi_info) {
@@ -499,7 +505,7 @@ int mtk_conninfra_probe(struct platform_device *pdev)
 	} else {
 		pr_err("Connsys log didn't init because EMI is invalid\n");
 	}
-
+#endif
 	if (pdev)
 		g_pdev = pdev;
 
@@ -516,9 +522,10 @@ int mtk_conninfra_remove(struct platform_device *pdev)
 
 int mtk_conninfra_suspend(struct platform_device *pdev, pm_message_t state)
 {
+#ifdef CONFIG_CONNINFRA_DEBUG
 	/* suspend callback is in atomic context */
 	CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_WHEN_AP_SUSPEND);
-
+#endif
 	return 0;
 }
 
@@ -533,8 +540,9 @@ int mtk_conninfra_resume(struct platform_device *pdev)
 
 static void consys_hw_ap_resume_handler(struct work_struct *work)
 {
+#ifdef CONFIG_CONNINFRA_DEBUG
 	CONNINFRA_STEP_DO_ACTIONS_FUNC(STEP_CONNINFRA_TP_WHEN_AP_RESUME);
-
+#endif
 	if (g_conninfra_dev_cb && g_conninfra_dev_cb->conninfra_resume_cb)
 		(*g_conninfra_dev_cb->conninfra_resume_cb)();
 }

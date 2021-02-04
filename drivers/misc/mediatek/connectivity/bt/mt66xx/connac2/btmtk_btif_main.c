@@ -432,7 +432,9 @@ int bt_chip_reset_flow(enum bt_reset_level rst_level,
 		down(&g_bdev->halt_sem);
 		if (g_bdev->bt_state == FUNC_ON) {
 			bt_dump_bgfsys_debug_cr();
+#ifdef CONFIG_CONNINFRA_DEBUG
 			connsys_coredump_start(g_bdev->coredump_handle, dump_property, drv, reason);
+#endif
 		} else
 			BTMTK_WARN("BT is not at on state, skip coredump: [%d]",
 					g_bdev->bt_state);
@@ -901,7 +903,7 @@ static int btmtk_btif_probe(struct platform_device *pdev)
 	sema_init(&g_bdev->internal_cmd_sem, 1);
 	sema_init(&g_bdev->btif_dpidle_ctrl.sem, 1);
 
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	/* 7. Init coredump */
 	g_bdev->coredump_handle = connsys_coredump_init(CONN_DEBUG_TYPE_BT, &bt_coredump_cb);
 #endif
@@ -940,7 +942,7 @@ static int btmtk_btif_remove(struct platform_device *pdev)
 #if (USE_DEVICE_NODE == 0)
 	btmtk_free_hci_device(g_bdev, HCI_UART);
 #endif
-#if SUPPORT_COREDUMP
+#ifdef CONFIG_CONNINFRA_DEBUG
 	if (!g_bdev->coredump_handle)
 		connsys_coredump_deinit(g_bdev->coredump_handle);
 #endif
