@@ -171,7 +171,7 @@ void *wlan_fb_notifier_priv_data;
 #define  KGIDT_VALUE(v) v
 #endif
 
-const struct firmware *fw_entry;
+extern const struct firmware *fw_entry;
 
 /* Default */
 static uint8_t *apucFwName[] = {

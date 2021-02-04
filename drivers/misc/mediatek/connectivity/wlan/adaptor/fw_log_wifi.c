@@ -143,17 +143,19 @@ static ssize_t fw_log_wifi_read(struct file *filp, char __user *buf, size_t len,
 
 	WIFI_INFO_FUNC_LIMITED("fw_log_wifi_read len --> %d\n", (uint32_t) len);
 
+#ifdef CONFIG_CONSYS_DEBUG
 	ret = connsys_log_read_to_user(CONNLOG_TYPE_WIFI, buf, len);
-
+#endif
 	return ret;
 }
 
 static unsigned int fw_log_wifi_poll(struct file *filp, poll_table *wait)
 {
 	poll_wait(filp, &wq, wait);
-
+#ifdef CONFIG_CONSYS_DEBUG
 	if (connsys_log_get_buf_size(CONNLOG_TYPE_WIFI) > 0)
 		return POLLIN|POLLRDNORM;
+#endif
 	return 0;
 }
 
@@ -296,10 +298,12 @@ struct fw_log_wifi_device {
 static struct fw_log_wifi_device *fw_log_wifi_dev;
 static int fw_log_wifi_major;
 
+#ifdef CONFIG_CONSYS_DEBUG
 static void fw_log_wifi_event_cb(void)
 {
 	wake_up_interruptible(&wq);
 }
+#endif
 
 int fw_log_wifi_init(void)
 {
@@ -353,8 +357,10 @@ int fw_log_wifi_init(void)
 
 	/* integrated with common debug utility */
 	init_waitqueue_head(&wq);
+#ifdef CONFIG_CONSYS_DEBUG
 	connsys_log_init(CONNLOG_TYPE_WIFI);
 	connsys_log_register_event_cb(CONNLOG_TYPE_WIFI, fw_log_wifi_event_cb);
+#endif
 	sema_init(&ioctl_mtx, 1);
 	pfFwEventFuncCB = NULL;
 #if (CFG_ANDORID_CONNINFRA_COREDUMP_SUPPORT == 1)
@@ -382,9 +388,10 @@ int fw_log_wifi_deinit(void)
 	kfree(fw_log_wifi_dev);
 	unregister_chrdev_region(MKDEV(fw_log_wifi_major, 0), 1);
 	WIFI_INFO_FUNC("unregister_chrdev_region major %d\n", fw_log_wifi_major);
-
+#ifdef CONFIG_CONSYS_DEBUG
 	/* integrated with common debug utility */
 	connsys_log_deinit(CONNLOG_TYPE_WIFI);
+#endif
 	return 0;
 }
 EXPORT_SYMBOL(fw_log_wifi_deinit);
