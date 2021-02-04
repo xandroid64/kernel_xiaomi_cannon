@@ -145,8 +145,9 @@ static INT32 consys_dump_gating_state(P_CONSYS_STATE state);
 static INT32 consys_sleep_info_enable_ctrl(UINT32 enable);
 static INT32 consys_sleep_info_read_ctrl(WMT_SLEEP_COUNT_TYPE type, PUINT64 sleep_counter, PUINT64 sleep_timer);
 static INT32 consys_sleep_info_clear(VOID);
+#ifdef CONFIG_CONSYS_DEBUG
 static VOID consys_conn2ap_sw_irq_clear(VOID);
-
+#endif
 /*******************************************************************************
 *                            P U B L I C   D A T A
 ********************************************************************************
@@ -1880,8 +1881,10 @@ static INT32 consys_dedicated_log_path_init(struct platform_device *pdev)
 		return iret;
 	}
 	osal_unsleepable_lock_init(&g_pwr_off_lock);
+#ifdef CONFIG_CONSYS_DEBUG
 	connsys_dedicated_log_path_apsoc_init(gConEmiPhyBase, irq_num, irq_flag);
 	connsys_log_register_eirq_cb(consys_conn2ap_sw_irq_clear);
+#endif
 #ifdef CONFIG_MTK_CONNSYS_DEDICATED_LOG_PATH
 	fw_log_wmt_init();
 #endif
@@ -1893,7 +1896,9 @@ static VOID consys_dedicated_log_path_deinit(VOID)
 #ifdef CONFIG_MTK_CONNSYS_DEDICATED_LOG_PATH
 	fw_log_wmt_deinit();
 #endif
+#ifdef CONFIG_CONSYS_DEBUG
 	connsys_dedicated_log_path_apsoc_deinit();
+#endif
 	osal_unsleepable_lock_deinit(&g_pwr_off_lock);
 }
 
@@ -2461,7 +2466,7 @@ INT32 consys_sleep_info_read_ctrl(WMT_SLEEP_COUNT_TYPE type, PUINT64 sleep_count
 
 	return 0;
 }
-
+#ifdef CONFIG_CONSYS_DEBUG
 static VOID consys_conn2ap_sw_irq_clear(VOID)
 {
 	UINT32 ret;
@@ -2487,4 +2492,4 @@ static VOID consys_conn2ap_sw_irq_clear(VOID)
 
 	osal_unlock_unsleepable_lock(&g_pwr_off_lock);
 }
-
+#endif

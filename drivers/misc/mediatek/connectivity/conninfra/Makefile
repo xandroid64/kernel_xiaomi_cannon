@@ -89,7 +89,7 @@ ccflags-y += -D CONNINFRA_DBG_SUPPORT=0
 #endif
 
 $(MODULE_NAME)-objs += base/ring.o
-$(MODULE_NAME)-objs += base/osal.o
+#$(MODULE_NAME)-objs += base/osal.o
 #$(MODULE_NAME)-objs += base/log.o
 $(MODULE_NAME)-objs += base/msg_thread.o
 $(MODULE_NAME)-objs += core/conninfra_core.o

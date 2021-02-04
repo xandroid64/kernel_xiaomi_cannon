@@ -96,11 +96,11 @@ CONSYS_PLATFORM_PMIC_OPS g_consys_platform_pmic_ops = {
 	.consys_pmic_event_notifier = consys_plt_pmic_event_notifier,
 };
 
-struct regulator *reg_VCN13;
-struct regulator *reg_VCN18;
-struct regulator *reg_VCN33_1_BT;
-struct regulator *reg_VCN33_1_WIFI;
-struct regulator *reg_VCN33_2_WIFI;
+extern struct regulator *reg_VCN13;
+extern struct regulator *reg_VCN18;
+extern struct regulator *reg_VCN33_1_BT;
+extern struct regulator *reg_VCN33_1_WIFI;
+extern struct regulator *reg_VCN33_2_WIFI;
 struct notifier_block vcn13_nb;
 
 static struct conninfra_dev_cb* g_dev_cb;

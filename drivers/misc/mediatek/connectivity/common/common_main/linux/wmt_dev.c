@@ -277,7 +277,9 @@ static VOID wmt_pwr_on_off_handler(struct work_struct *work)
 	/* Update blank off status before wmt power off */
 	if (wmt_dev_get_blank_state() == 0) {
 		wmt_dev_blank_handler();
+#ifdef CONFIG_CONSYS_DEBUG
 		connsys_log_blank_state_changed(0);
+#endif
 	}
 
 	if (always_pwr_on_flag == 0) {
@@ -293,7 +295,9 @@ static VOID wmt_pwr_on_off_handler(struct work_struct *work)
 	/* Update blank on status after wmt power on */
 	if (wmt_dev_get_blank_state() == 1) {
 		wmt_dev_blank_handler();
+#ifdef CONFIG_CONSYS_DEBUG
 		connsys_log_blank_state_changed(1);
+#endif
 	}
 }
 

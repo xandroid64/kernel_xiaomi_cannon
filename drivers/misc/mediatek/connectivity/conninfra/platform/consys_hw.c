@@ -97,7 +97,7 @@ static struct platform_driver mtk_conninfra_dev_drv = {
 struct consys_hw_env conn_hw_env;
 
 struct consys_hw_ops_struct *consys_hw_ops;
-struct platform_device *g_pdev;
+extern struct platform_device *g_pdev;
 
 int g_conninfra_wakeup_ref_cnt;
 

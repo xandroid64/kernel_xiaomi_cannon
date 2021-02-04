@@ -119,7 +119,7 @@ static INT32 wmt_dbg_stp_sdio_reg_read(INT32 par1, INT32 address, INT32 value);
 static INT32 wmt_dbg_stp_sdio_reg_write(INT32 par1, INT32 address, INT32 value);
 static INT32 wmt_dbg_show_thread_debug_info(INT32 par1, INT32 address, INT32 value);
 static INT32 wmt_dbg_met_ctrl(INT32 par1, INT32 met_ctrl, INT32 log_ctrl);
-#ifdef CONFIG_MTK_CONNSYS_DEDICATED_LOG_PATH
+#ifdef CONFIG_CONSYS_DEBUG
 static INT32 wmt_dbg_set_fw_log_mode(INT32 par1, INT32 par2, INT32 par3);
 static INT32 wmt_dbg_emi_dump(INT32 par1, INT32 offset, INT32 size);
 #endif
@@ -190,7 +190,7 @@ static const WMT_DEV_DBG_FUNC wmt_dev_dbg_func[] = {
 	[0x29] = wmt_dbg_thermal_query,
 	[0x2a] = wmt_dbg_thermal_ctrl,
 	[0x2b] = wmt_dbg_step_ctrl,
-#ifdef CONFIG_MTK_CONNSYS_DEDICATED_LOG_PATH
+#ifdef CONFIG_CONSYS_DEBUG
 	[0x2c] = wmt_dbg_set_fw_log_mode,
 	[0x2d] = wmt_dbg_emi_dump,
 #endif
@@ -399,7 +399,7 @@ INT32 wmt_dbg_cmd_test_api(ENUM_WMTDRV_CMD_T cmd)
 	}
 	bRet = wmt_lib_put_act_op(pOp);
 
-#ifdef CONFIG_MTK_CONNSYS_DEDICATED_LOG_PATH
+#ifdef CONFIG_CONSYS_DEBUG
 	if (cmd == WMTDRV_CMD_COS_TRACE_ENABLE) {
 		connsys_dedicated_log_enable_flush_emi_loop();
 	} else if (cmd == WMTDRV_CMD_COS_TRACE_DISABLE) {
@@ -745,7 +745,7 @@ static INT32 wmt_dbg_ap_reg_write(INT32 par1, INT32 par2, INT32 par3)
 	return 0;
 }
 
-#ifdef CONFIG_MTK_CONNSYS_DEDICATED_LOG_PATH
+#ifdef CONFIG_CONSYS_DEBUG
 static INT32 wmt_dbg_set_fw_log_mode(INT32 par1, INT32 par2, INT32 par3)
 {
 	connsys_dedicated_log_set_log_mode(par2);
@@ -753,7 +753,7 @@ static INT32 wmt_dbg_set_fw_log_mode(INT32 par1, INT32 par2, INT32 par3)
 }
 
 static INT32 wmt_dbg_emi_dump(INT32 par1, INT32 offset, INT32 size)
-{
+{ 
 	connsys_dedicated_log_dump_emi(offset, size);
 	return 0;
 }
@@ -766,10 +766,12 @@ static INT32 wmt_dbg_emi_dump(INT32 par1, INT32 offset, INT32 size)
 /********************************************************/
 static INT32 wmt_dbg_suspend_debug(INT32 par1, INT32 par2, INT32 par3)
 {
+#ifdef CONFIG_CONSYS_DEBUG
 	if (par2 > 0)
 		connsys_log_alarm_enable(par2);
 	else
 		connsys_log_alarm_disable();
+#endif
 	return 0;
 }
 

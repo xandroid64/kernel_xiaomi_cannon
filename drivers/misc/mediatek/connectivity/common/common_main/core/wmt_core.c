@@ -3275,7 +3275,9 @@ static INT32 opfunc_utc_time_sync(P_WMT_OP pWmtOp)
 	UINT32 tsec;
 	UINT32 tusec;
 
+#ifdef CONFIG_CONSYS_DEBUG
 	connsys_dedicated_log_get_utc_time(&tsec, &tusec);
+#endif
 	/* UTC time second unit */
 	osal_memcpy(&WMT_UTC_SYNC_CMD[5], &tsec, 4);
 	/* UTC time microsecond unit */

@@ -134,7 +134,7 @@ struct consys_hw_ops_struct g_consys_hw_ops = {
 };
 
 
-struct clk *clk_scp_conn_main;	/*ctrl conn_power_on/off */
+extern struct clk *clk_scp_conn_main;	/*ctrl conn_power_on/off */
 struct consys_plat_thermal_data g_consys_plat_therm_data;
 
 /*******************************************************************************

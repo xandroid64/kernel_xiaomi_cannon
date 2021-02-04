@@ -95,7 +95,7 @@ const char* consys_base_addr_index_to_str[CONSYS_BASE_ADDR_MAX] = {
 	"IOCFG_RT",
 };
 
-struct consys_base_addr conn_reg;
+extern struct consys_base_addr conn_reg;
 
 struct consys_reg_mng_ops* get_consys_reg_mng_ops(void)
 {

@@ -48,7 +48,9 @@ static ssize_t fw_log_wmt_read(struct file *filp, char __user *buf,
 	ssize_t size = 0;
 
 	pr_debug("%s\n", __func__);
+#ifdef CONFIG_CONSYS_DEBUG
 	size = connsys_log_read_to_user(CONNLOG_TYPE_MCU, buf, count);
+#endif
 	return size;
 }
 
@@ -64,8 +66,10 @@ static unsigned int fw_log_wmt_poll(struct file *filp, poll_table *wait)
 	pr_debug("%s\n", __func__);
 
 	poll_wait(filp, &wq, wait);
+#ifdef CONFIG_CONSYS_DEBUG
 	if (connsys_log_get_buf_size(CONNLOG_TYPE_MCU) > 0)
 		return POLLIN | POLLRDNORM;
+#endif
 
 	return 0;
 }
@@ -113,10 +117,12 @@ const struct file_operations gLogFops = {
 #endif
 };
 
+#ifdef CONFIG_CONSYS_DEBUG
 static void fw_log_wmt_event_cb(void)
 {
 	wake_up_interruptible(&wq);
 }
+#endif
 
 int fw_log_wmt_init(void)
 {
@@ -150,6 +156,7 @@ int fw_log_wmt_init(void)
 	}
 
 	init_waitqueue_head(&wq);
+#ifdef CONFIG_CONSYS_DEBUG
 	ret = connsys_log_init(CONNLOG_TYPE_MCU);
 	if (ret)
 		pr_err("fail to connsys_log_init\n");
@@ -158,6 +165,7 @@ int fw_log_wmt_init(void)
 		fw_log_wmt_event_cb);
 	if (ret)
 		pr_err("fail to connsys_log_register_event_cb\n");
+#endif
 
 	return 0;
 
@@ -180,7 +188,9 @@ EXPORT_SYMBOL(fw_log_wmt_init);
 
 void fw_log_wmt_deinit(void)
 {
+#ifdef CONFIG_CONSYS_DEBUG
 	connsys_log_deinit(CONNLOG_TYPE_MCU);
+#endif
 	if (fw_log_wmt_dev) {
 		device_destroy(fw_log_wmt_class, gDevId);
 		fw_log_wmt_dev = NULL;

@@ -84,13 +84,8 @@ endif
 
 ###############################################################################
 MODULE_NAME := wmt_drv
-ifeq ($(CONFIG_WLAN_DRV_BUILD_IN),y)
 $(warning $(MODULE_NAME) build-in boot.img)
 obj-y += $(MODULE_NAME).o
-else
-$(warning $(MODULE_NAME) is kernel module)
-obj-m += $(MODULE_NAME).o
-endif
 
 ###############################################################################
 # common_detect
@@ -253,20 +248,6 @@ $(MODULE_NAME)-objs += common_main/linux/wmt_step.o
 
 ifeq ($(CONFIG_MTK_BTIF), y)
 $(MODULE_NAME)-objs += common_main/linux/stp_btif.o
-endif
-
-$(MODULE_NAME)-objs += debug_utility/ring.o
-$(MODULE_NAME)-objs += debug_utility/ring_emi.o
-$(MODULE_NAME)-objs += debug_utility/connsys_debug_utility.o
-###############################################################################
-# test
-###############################################################################
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-ccflags-y += -I$(src)/test/include
-endif
-
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-$(MODULE_NAME)-objs += test/wmt_step_test.o
 endif
 
 endif
