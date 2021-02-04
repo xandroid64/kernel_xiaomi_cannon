@@ -68,7 +68,9 @@ static wait_queue_head_t GPS_log_wq;
 bool fgGps_fw_log_ON;
 
 /*---------------------------------------------------------------------------*/
+#ifdef CONFIG_CONNSYS_DEBUG
 static void log_event_cb(void);
+#endif
 
 long fw_log_gps_unlocked_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 {
@@ -120,13 +122,14 @@ static int fw_log_close(struct inode *inode, struct file *file)
 /******************************************************************************/
 static ssize_t fw_log_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
 {
-	int retval;
+	int retval = 0;
 
 	#if 0
 	pr_info("GPS fw_log_read,len=%d\n", count);
 	#endif
-
+#ifdef CONFIG_CONNSYS_DEBUG
 	retval = connsys_log_read_to_user(CONNLOG_TYPE_GPS, buf, count);
+#endif
 	return retval;
 }
 /******************************************************************************/
@@ -134,9 +137,11 @@ static unsigned int fw_log_poll(struct file *file, poll_table *wait)
 {
 	unsigned int mask = 0;
 
+#ifdef CONFIG_CONNSYS_DEBUG
 	poll_wait(file, &GPS_log_wq, wait);
 	if (connsys_log_get_buf_size(CONNLOG_TYPE_GPS) > 0)
 		mask = (POLLIN | POLLRDNORM);
+#endif
 
 	return mask;
 }
@@ -153,10 +158,12 @@ static const struct file_operations gps_fw_log_fops = {
 	.poll = fw_log_poll,
 };
 
+#ifdef CONFIG_CONNSYS_DEBUG
 void log_event_cb(void)
 {
 	wake_up_interruptible(&GPS_log_wq);
 }
+#endif
 
 static int __init gps_fw_log_init(void)
 {
@@ -192,11 +199,13 @@ static int __init gps_fw_log_init(void)
 	goto err_out;
 	}
 	logdevobj->dev = device_create(logdevobj->cls, NULL, logdevobj->devno, logdevobj, "fw_log_gps");
-
+#ifdef CONFIG_CONNSYS_DEBUG
 	connsys_log_init(CONNLOG_TYPE_GPS);
+#endif
 	init_waitqueue_head(&GPS_log_wq);
+#ifdef CONFIG_CONNSYS_DEBUG
 	connsys_log_register_event_cb(CONNLOG_TYPE_GPS, log_event_cb);
-
+#endif
 	pr_info("GPS FW LOG device init Done\n");
 	return 0;
 
@@ -221,7 +230,9 @@ static void gps_fw_log_exit(void)
 	}
 
 	pr_info("Unregistering chardev\n");
+#ifdef CONFIG_CONNSYS_DEBUG
 	connsys_log_deinit(CONNLOG_TYPE_GPS);
+#endif
 	cdev_del(&logdevobj->chdev);
 	unregister_chrdev_region(logdevobj->devno, 1);
 	device_destroy(logdevobj->cls, logdevobj->devno);
